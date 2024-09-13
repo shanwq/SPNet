@@ -41,7 +41,6 @@ class MedData_train_mip_3d_sparse(torch.utils.data.Dataset):
     def __init__(self, images_dir, labels_dir, mip_3d_sparse_train_dir):
 
         patch_size = hp.patch_size
-            # patch_size = 512, 512, 46
         queue_length = 10
         samples_per_volume = 10
 
