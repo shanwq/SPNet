@@ -129,8 +129,4 @@ if __name__ == '__main__':
     mip_generate_all_ADAM()
     mip_generate_all_IXI_HH()
 
-    
-    
-    # sitk.WriteImage(mip_img, mip_img_16slice_path + img_name)
-    # sitk.WriteImage(mip_lbl, mip_lbl_16slice_path + img_name)
-    
+
