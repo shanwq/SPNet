@@ -22,7 +22,6 @@ class hparams:
     patch_overlap = 4,4,4 # if 2D: 4,4,0
 
     fold_arch = '*.nii.gz'
-
     save_arch = '.nii.gz'
     data_description = 'ADAM'
     
