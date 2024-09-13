@@ -33,7 +33,6 @@ from torchio.transforms import (
     ZNormalization,
     CropOrPad,
     HistogramStandardization,
-    OneOf,
     Compose,
 )
 from medpy.io import load,save
