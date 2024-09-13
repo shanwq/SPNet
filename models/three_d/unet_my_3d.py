@@ -260,14 +260,7 @@ if __name__ == '__main__':
     Unet_mip = Unet_Mip3D(1,2)
     device = torch.device("cuda:1" if torch.cuda.is_available() else "cpu")
     Unet_mip = Unet_mip.cuda()
-    # TransU3d = trans_unet_3d.cuda()
-    input_tensor = torch.randn(1, 1, 64, 192, 192).cuda()
+    input_tensor = torch.randn(1, 1, 64, 128, 128).cuda()
 
     pred_soft, feat = Unet_mip(input_tensor)
     print(pred_soft.shape)
-    # print('!!', out['pred_logits'].shape)
-    # print('!!', out['pred_masks'].shape)
-    # print('!!', len(out['aux_outputs']))
-    # for iii in range(len(out['aux_outputs'])):
-    #     print(iii, out['aux_outputs'][iii]['pred_logits'].shape)
-    #     print(iii, out['aux_outputs'][iii]['pred_masks'].shape)
