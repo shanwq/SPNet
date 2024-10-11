@@ -241,7 +241,7 @@ class MLP(nn.Module):
 
 
 @TRANSFORMER_DECODER_REGISTRY.register()
-class MultiScaleMaskedTransformerDecoder3d(nn.Module):
+class MultiScaleTransformerDecoder3d(nn.Module):
 
     _version = 2
 
