@@ -39,7 +39,6 @@ from medpy.io import load,save
 from tqdm import tqdm
 from torchvision import utils
 from hparam import hparams as hp
-from utils.metric import metric
 from torch.optim.lr_scheduler import ReduceLROnPlateau,StepLR,CosineAnnealingLR
 import json
 from optimizers.lr_scheduler import LinearWarmupCosineAnnealingLR
