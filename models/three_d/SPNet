@@ -132,7 +132,7 @@ class SPNet(nn.Module):
             )
         
         self.linear_mask_features = nn.Conv3d(in_channels=32, out_channels=192, kernel_size=(1,1,1), stride=(1,1,1))
-        from .mask2former_modeling.transformer_decoder.mask2former_transformer_decoder3d import MultiScaleTransformerDecoder3d
+        from .modeling.transformer_decoder.transformer_decoder3d import MultiScaleTransformerDecoder3d
         cfg = {
                     "num_classes": 2,
                     "hidden_dim": 192,
@@ -151,7 +151,7 @@ class SPNet(nn.Module):
         cfg["is_masking_argmax"] = False #True if is_masking_argmax else False
         cfg["is_mhsa_float32"] = True #if is_mhsa_float32 else False
         cfg["no_max_hw_pe"] = False# True if no_max_hw_pe else False
-        self.predictor = MultiScaleMaskedTransformerDecoder3d(in_channels=max_hidden_dim, mask_classification=True, **cfg)
+        self.predictor = MultiScaleTransformerDecoder3d(in_channels=max_hidden_dim, mask_classification=True, **cfg)
         
         # self.predictor = nn.ModuleList()
         
