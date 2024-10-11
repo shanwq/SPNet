@@ -178,7 +178,7 @@ def train():
     torch.backends.cudnn.enabled = args.cudnn_enabled
     torch.backends.cudnn.benchmark = args.cudnn_benchmark
 
-    from data_function import MedData_train
+    from data_function import MedData_train_mip_3d_sparse
     os.makedirs(args.output_dir, exist_ok=True)
     if hp.mode == '3d':
         
