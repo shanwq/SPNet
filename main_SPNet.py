@@ -213,7 +213,8 @@ def train():
 
     writer = SummaryWriter(args.output_dir)
     print(source_train_dir, label_train_dir)
-    train_dataset = MedData_train(source_train_dir,label_train_dir)
+    train_dataset = MedData_train_mip_3d_sparse(source_train_dir,label_train_dir, mip_3d_sparse_train_dir)
+
     train_loader = DataLoader(train_dataset.queue_dataset, 
                             batch_size=args.batch, 
                             shuffle=True,
@@ -241,7 +242,7 @@ def train():
             if (hp.in_class == 1) and (hp.out_class == 1) :
                 x = batch['source']['data']
                 y = batch['label']['data']
-                mip_3D = batch['mpi_sparse']['data']
+                mip_3D = batch['mip_sparse']['data']
                 x = torch.transpose(x, 2, 4)
                 y = torch.transpose(y, 2, 4)
                 mip_3D = torch.transpose(mip_3D, 2, 4)
@@ -250,7 +251,9 @@ def train():
                 mip_3D = mip_3D.type(torch.FloatTensor).cuda()
 
             outputs = model(x, mip_3D)
-            loss = compute_loss(outputs, y)#, True, False, True, True, is_max_ds, point_rend, num_point_rend, no_object_weight)
+            is_max, is_c2f, is_sigmoid, is_max_hungarian = True, False, True, True
+            is_max_ds, point_rend, num_point_rend, no_object_weight = True, False, None, None
+            loss = compute_loss(outputs, y, is_max, is_c2f, is_sigmoid, is_max_hungarian, is_max_ds, point_rend, num_point_rend, no_object_weight)
             print(f'Batch: {i}/{len(train_loader)} epoch {epoch}, loss:{loss}, lr:{scheduler._last_lr[0]}, time:{time.time()-t_start}')
             
             ##########################################################################################################################
