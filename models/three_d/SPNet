@@ -48,6 +48,13 @@ class SPNet(nn.Module):
         self.mask_downscaling_3 =nn.Sequential( ConvBlock(input_channels=128, output_channels=256, kernel_size=(3,3,3), stride=(2,2,2), padding = (1,1,1)),)
         self.mask_downscaling_4 =nn.Sequential( ConvBlock(input_channels=256, output_channels=320, kernel_size=(3,3,3), stride=(1,2,2), padding = (1,1,1)),)
         self.mask_downscaling_5 =nn.Sequential( ConvBlock(input_channels=320, output_channels=320, kernel_size=(3,3,3), stride=(1,2,2), padding = (1,1,1)),)
+        
+        self.miff_0 = MIFF(32)
+        self.miff_1 = MIFF(64)
+        self.miff_2 = MIFF(128)
+        self.miff_3 = MIFF(256)
+        self.miff_4 = MIFF(320)
+        self.miff_5 = MIFF(320)
 
         self.conv_blocks_context_0 = nn.Sequential(
             ConvBlock(input_channels=1, output_channels=32, kernel_size=(1,3,3), stride=(1,1,1), padding = (0,1,1)),
@@ -244,31 +251,29 @@ class SPNet(nn.Module):
         # print('input_x.shape is', x.shape)
         x = self.conv_blocks_context_0(x)
         # print('conv_blocks_context_0.shape is', x.shape)
-        x = x + mask_0
+        x = self.miff_0(x, mask_0)
+
         skips.append(x)
         x = self.conv_blocks_context_1(x)
         # print('conv_blocks_context_1.shape is', x.shape)
-        x = x + mask_1
-        # quit()
+        x = self.miff_1(x, mask_1)
         skips.append(x)
         x = self.conv_blocks_context_2(x)
         # print('conv_blocks_context_2.shape is', x.shape)
-        x = x + mask_2
+        x = self.miff_2(x, mask_2)
         skips.append(x)
         x = self.conv_blocks_context_3(x)
         # print('conv_blocks_context_3.shape is', x.shape)
-        x = x + mask_3
+        x = self.miff_3(x, mask_3)
         skips.append(x)
         x = self.conv_blocks_context_4(x)
         # print('conv_blocks_context_4.shape is', x.shape)
-        x = x + mask_4
+        x = self.miff_4(x, mask_4)
         skips.append(x)
         
         x = self.conv_blocks_context_5(x)
         # print('conv_blocks_context_5.shape is', x.shape)
-        
-        
-        x = x + mask_5
+        x = self.miff_5(x, mask_5)
         
         ds_feats = [] # obtain multi-scale feature
         ds_feats.append(x)
@@ -327,8 +332,21 @@ class SPNet(nn.Module):
         predictions = self.predictor(transformer_decoder_in_feature, mask_features, mask=None)
         # print('self.predictions :', len(predictions),predictions.keys())
         return predictions
-        
-            
+
+class MIFF(nn.Module):
+    def __init__(self, feat_channel):
+        super().__init__()
+        self.feat_channel = feat_channel
+        self.conv_after_addition = nn.Sequential(
+            ConvBlock(input_channels=2*self.feat_channel, output_channels=self.feat_channel, kernel_size=(3,3,3), stride=(1,1,1), padding = (1,1,1)),
+            )
+    def forward(self, x, mip_feat):
+        x_ori = x
+        x = x + mip_feat
+        x = torch.cat((x_ori, x), dim=1)
+        x = self.conv_after_addition(x)
+        return x
+
 class PositionEmbeddingSine(nn.Module):
     """
     This is a more standard version of the position embedding, very similar to the one
