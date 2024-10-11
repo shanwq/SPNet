@@ -76,6 +76,7 @@ def weights_init_normal(m):
 source_train_dir = hp.source_train_dir
 label_train_dir = hp.label_train_dir
 # unlabel_dir_train = hp.unlabel_dir
+mip_3d_sparse_train_dir = hp.mip_pred_to_3d_sparse_mask_train_dir
 
 os.makedirs(hp.output_dir, exist_ok=True)
 
@@ -83,7 +84,6 @@ source_test_dir = hp.source_test_dir
 label_test_dir = hp.label_test_dir
 
 output_int_dir = hp.output_int_dir
-output_float_dir = hp.output_float_dir
 
 hpparams_dict = {key: value for key, value in hp.__dict__.items() if not key.startswith('__') and not callable(key)}
 
