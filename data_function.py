@@ -60,7 +60,7 @@ class MedData_train_mip_3d_sparse(torch.utils.data.Dataset):
                 subject = tio.Subject(
                     source=tio.ScalarImage(image_path),
                     label=tio.LabelMap(label_path),
-                    mip_3d_spars=tio.ScalarImage(mip_3d_sparse_path),
+                    mip_sparse=tio.ScalarImage(mip_3d_sparse_path),
                 )
                 self.subjects.append(subject)
 
